@@ -15,4 +15,5 @@
     <string name="temperature">Temperature:</string>
     <string name="metric">metric</string>
     <string name="no_city_in_list_message">No city or location is bookmarked.\nClick Add City Button to for adding city in bookmark list</string>
+    <string name="city_deleted_on_swipe">City removed from the list</string>
 </resources>

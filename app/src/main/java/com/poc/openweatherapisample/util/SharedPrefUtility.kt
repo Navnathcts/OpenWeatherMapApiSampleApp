@@ -46,5 +46,12 @@ object SharedPrefUtility {
         val type = object : TypeToken<HashMap<String?, CityDetailModel?>?>() {}.type
         return gson.fromJson(json, type)
     }
+    fun updateCityList(context: Context, key: String?, map: MutableMap<String?, CityDetailModel?>?) {
+        val editor = getPrefManager(context)?.edit()
+        val gson = Gson()
+        val json = gson.toJson(map)
+        editor?.putString(key, json)
+        editor?.apply()
+    }
 }
 

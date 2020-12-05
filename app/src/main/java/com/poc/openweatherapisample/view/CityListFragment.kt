@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azhar.weatherapp.adapter.CityListAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.poc.openweatherapisample.R
 import com.poc.openweatherapisample.model.CityDetailModel
 import com.poc.openweatherapisample.util.ACTION_REQUEST_CODE_FOR_MAP_ACTIVITY
@@ -19,11 +20,13 @@ import com.poc.swipecarouselapp.util.hideView
 import com.poc.swipecarouselapp.util.showView
 import com.shivtechs.maplocationpicker.LocationPickerActivity
 import com.shivtechs.maplocationpicker.MapUtility
+import com.tsuryo.swipeablerv.SwipeLeftRightCallback
 import kotlinx.android.synthetic.main.city_list_fragment.*
 
 class CityListFragment : Fragment(), CityListAdapter.CityItemClickListener {
 
     private var cityListAdapter: CityListAdapter? = null
+    private var cityDataHolderMap: HashMap<String?, CityDetailModel?>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cityListAdapter = CityListAdapter(this)
@@ -42,6 +45,16 @@ class CityListFragment : Fragment(), CityListAdapter.CityItemClickListener {
             layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
             adapter = cityListAdapter
+            setListener(object : SwipeLeftRightCallback.Listener {
+                override fun onSwipedRight(position: Int) {
+                    updateCityListOnSwipeDelete(position)
+                }
+
+                override fun onSwipedLeft(position: Int) {
+                    updateCityListOnSwipeDelete(position)
+                }
+
+            })
         }
         btnAddCity?.setOnClickListener {
             val intent = Intent(requireActivity(), LocationPickerActivity::class.java)
@@ -49,12 +62,26 @@ class CityListFragment : Fragment(), CityListAdapter.CityItemClickListener {
         }
     }
 
+    private fun updateCityListOnSwipeDelete(position: Int) {
+        cityDataHolderMap?.apply {
+            remove(key = keys.toMutableList()[position])
+            cityListAdapter?.setCityList(cityDataHolderMap)
+            SharedPrefUtility.updateCityList(requireActivity(), KEY_CITY_LIST, this)
+            Snackbar.make(
+                rvLocationList,
+                getString(R.string.city_deleted_on_swipe),
+                Snackbar.LENGTH_LONG
+            ).show();
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        SharedPrefUtility.getHashMap(
+        cityDataHolderMap = SharedPrefUtility.getHashMap(
             requireActivity(),
             KEY_CITY_LIST
-        ).let {
+        )
+        cityDataHolderMap.let {
             when (it?.size) {
                 0 -> {
                     tvNoCityList.showView()
