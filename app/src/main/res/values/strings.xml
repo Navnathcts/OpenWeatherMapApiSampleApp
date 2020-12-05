@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">OpenWeatherApiSample</string>
+    <string name="enable_location">Enable Location</string>
+    <string name="enable_location_message">Your Locations Settings are OFF \nPlease Enable Location</string>
+    <string name="title_allow">Allow</string>
+    <string name="title_cancel">Cancel</string>
+    <string name="your_api_key">AIzaSyC9uI21vlfTKLjJdATdtReowgg_YAMHLmI</string>
+    <string name="add_city">Add City</string>
+    <string name="key_latitude">long</string>
+    <string name="key_longitude">lat</string>
+    <string name="key_city_name">city</string>
+    <string name="humidity">Humidity:</string>
+    <string name="wind">Wind:</string>
+    <string name="rain">Rain:</string>
+    <string name="temperature">Temperature:</string>
+    <string name="metric">metric</string>
+    <string name="no_city_in_list_message">No city or location is bookmarked.\nClick Add City Button to for adding city in bookmark list</string>
+</resources>
